@@ -24,7 +24,7 @@ fun Canvas.drawSideDownNode(i : Int, scale : Float, currI : Int, paint : Paint) 
     paint.strokeCap = Paint.Cap.ROUND
     paint.color = Color.parseColor("#283593")
     save()
-    translate(gap * i + gap/2, h/2)
+    translate(0.05f * w + gap * i + gap/2, h/2)
     scale(1f, 1f - 2 * (i % 2))
     save()
     translate(-gap/2, -gap/2)
@@ -36,7 +36,7 @@ fun Canvas.drawSideDownNode(i : Int, scale : Float, currI : Int, paint : Paint) 
     restore()
     if (currI == i) {
         paint.color = Color.WHITE
-        drawCircle(-gap/2 + gap * sc1, -gap/2 + gap * sc2, gap/18, paint)
+        drawCircle(-gap/2 + gap * sc1, -gap/2 + gap * sc2, gap/10, paint)
     }
     restore()
 }
