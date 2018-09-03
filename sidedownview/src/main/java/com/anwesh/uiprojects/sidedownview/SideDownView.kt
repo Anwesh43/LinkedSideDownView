@@ -104,4 +104,47 @@ class SideDownView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class SideDownNode(var i : Int, val state : State = State()) {
+        private var next : SideDownNode? = null
+        private var prev : SideDownNode? = null
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = SideDownNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        init {
+            addNeighbor()
+        }
+
+        fun draw(canvas : Canvas, currI : Int, paint : Paint) {
+            prev?.draw(canvas, currI, paint)
+            canvas.drawSideDownNode(i, state.scale, currI, paint)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : SideDownNode {
+            var curr : SideDownNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
