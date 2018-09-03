@@ -147,4 +147,27 @@ class SideDownView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class LinkedSideDown(var i : Int) {
+
+        private var curr : SideDownNode = SideDownNode(0)
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            curr.draw(canvas, curr.i, paint)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            curr.update {i, scl ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(i, scl)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
