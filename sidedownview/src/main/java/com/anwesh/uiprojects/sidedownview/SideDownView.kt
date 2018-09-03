@@ -79,7 +79,7 @@ class SideDownView(ctx : Context) : View(ctx) {
 
     data class Animator(var view : View, var animated : Boolean = false) {
 
-        fun start(cb : () -> Unit) {
+        fun animate(cb : () -> Unit) {
             if (animated) {
                 cb()
                 try {
@@ -168,6 +168,27 @@ class SideDownView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : SideDownView) {
+        private val animator : Animator = Animator(view)
+        private val sideDown : LinkedSideDown = LinkedSideDown(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#263238"))
+            sideDown.draw(canvas, paint)
+            animator.animate {
+                sideDown.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sideDown.startUpdating {
+                animator.start()
+            }
         }
     }
 }
