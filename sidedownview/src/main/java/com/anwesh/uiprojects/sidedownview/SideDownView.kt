@@ -9,8 +9,36 @@ import android.view.MotionEvent
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.content.Context
+import android.graphics.Color
 
 val nodes : Int = 5
+
+fun Canvas.drawSideDownNode(i : Int, scale : Float, currI : Int, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = (w * 0.9f) / nodes
+    val sc1 : Float = Math.min(0.5f, scale) * 2
+    val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
+    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = Color.parseColor("#283593")
+    save()
+    translate(gap * i + gap/2, h/2)
+    scale(1f, 1f - 2 * (i % 2))
+    save()
+    translate(-gap/2, -gap/2)
+    drawLine(0f, 0f, gap * sc1, 0f, paint)
+    restore()
+    save()
+    translate(gap/2, -gap/2)
+    drawLine(0f, 0f, 0f, gap * sc2, paint)
+    restore()
+    if (currI == i) {
+        paint.color = Color.WHITE
+        drawCircle(-gap/2 + gap * sc1, -gap/2 + gap * sc2, gap/18, paint)
+    }
+    restore()
+}
 
 class SideDownView(ctx : Context) : View(ctx) {
 
