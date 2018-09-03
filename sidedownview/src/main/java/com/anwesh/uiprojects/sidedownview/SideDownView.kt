@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.sidedownview
  * Created by anweshmishra on 04/09/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.graphics.Canvas
@@ -190,6 +191,14 @@ class SideDownView(ctx : Context) : View(ctx) {
             sideDown.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : SideDownView {
+            val view : SideDownView = SideDownView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
